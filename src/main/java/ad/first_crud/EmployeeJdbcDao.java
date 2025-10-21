@@ -8,11 +8,16 @@ import java.util.List;
 public class EmployeeJdbcDao {
     public List<Employee> getAllEmployees() {
         List<Employee> result = new ArrayList<>();
+        String SQL_SELECT = "Select * from EMPLOYEE";
+       return connection(SQL_SELECT);
 
+    }
+
+    private static List<Employee> connection(String SQL_SELECT) {
+       ArrayList<Employee> result = new ArrayList<>();
         try (
                 Connection conn = DriverManager.getConnection(
                         "jdbc:mysql://127.0.0.1:3306/test?serverTimezone=UTC", "root", "root")) {
-            String SQL_SELECT = "Select * from EMPLOYEE";
             PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -31,10 +36,7 @@ public class EmployeeJdbcDao {
                 obj.setCreatedDate(createdDate.toLocalDateTime());
 
                 result.add(obj);
-
             }
-            result.forEach(x -> System.out.println(x.toString()));
-
             if (conn != null) {
                 System.out.println("Connected to the database!");
             } else {
@@ -47,7 +49,10 @@ public class EmployeeJdbcDao {
             e.printStackTrace();
         }
         return result;
+    }
 
-
+    public List<Employee> getEmployeesWithLessSalary(double lesssalary) {
+        String SQL_SELECT = "Select * from EMPLOYEE where salary <=" + lesssalary;
+        return connection(SQL_SELECT);
     }
 }

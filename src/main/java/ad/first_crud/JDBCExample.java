@@ -22,5 +22,6 @@ public class JDBCExample {
         // auto close connection
         EmployeeJdbcDao ejdao= new EmployeeJdbcDao();
         ejdao.getAllEmployees().forEach(e-> System.out.println(e));
+        ejdao.getEmployeesWithLessSalary(55000d).forEach(e-> System.out.println(e));
     }
 }
